@@ -87,7 +87,6 @@ end # End of Class
 
 # end
 
-
 # Testing Code
 # m = Mongo_Connection.new("localhost", 27017, "GitLab-TimeTracking", "TimeTrackingCommits")
 # m.clear_mongo_collections
