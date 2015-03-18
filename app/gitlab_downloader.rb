@@ -17,38 +17,51 @@ class GitLab_Downloader
 
 	def downloadIssuesAndComments(projectID)
 		# issues = @glClient.issues(153287)
-		issues = @glClient.issues(projectID)
+		issuePageNum = 1
+		issues = @glClient.issues(projectID, :per_page=>100, :page=>issuePageNum)
 		issues2 = []
-		# Iterates through each issue and get the notes and merges the notes into the issue hash.
-		issues.each do |x|
-			x = x.to_h	# Converts the ObjectifiedHash that is returned by GitLab into a Ruby Hash
-			
-			issueComments = @glClient.issue_notes(x["project_id"], x["id"])	# Gets the notes for the current issue
-			if issueComments.length > 0
-				comments2 = []
-				issueComments.each do |y|
-					y = y.to_h
-					
-					# Parses each comment for Time Tracking Information. Then merges back into the Comment Hash
-					timeTrack = Gl_Issue.process_comment(y)
-					if timeTrack != nil
-						y = y.merge(timeTrack)
-					
+		while issues.length > 0  do
 
-					comments2 << y
-					end
-				end
-
-
-				x["comments"] = comments2 	# Merges the comments/notes into the main Issues Hash for each issue
+			# Iterates through each issue and get the notes and merges the notes into the issue hash.
+			issues.each do |x|
+				x = x.to_h	# Converts the ObjectifiedHash that is returned by GitLab into a Ruby Hash
+				# commentPageNum = 1
+				issueComments = @glClient.issue_notes(x["project_id"], x["id"])	# Gets the notes for the current issue
+				# issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
 				
-				issues2 << x
+				if issueComments.length > 0
+					comments2 = []
+
+					# while issueComments.length > 0  do
+						issueComments.each do |y|
+							y = y.to_h
+							
+							# Parses each comment for Time Tracking Information. Then merges back into the Comment Hash
+							timeTrack = Gl_Issue.process_comment(y)
+							if timeTrack != nil
+								y = y.merge(timeTrack)
+							
+
+							comments2 << y
+							end
+						end
+						# commentPageNum += 1
+						# issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
+					# end
+
+					x["comments"] = comments2 	# Merges the comments/notes into the main Issues Hash for each issue
+					
+					issues2 << x
+				end
 			end
+
+			issuePageNum += 1
+			issues = @glClient.issues(projectID, :per_page=>100, :page=>issuePageNum)
 		end
-		ap issues2
-		issues2
-	end
-end
+	issues2
+	end # End of Method
+end # End of Class
+
 
 # class Mongo_Connection
 
