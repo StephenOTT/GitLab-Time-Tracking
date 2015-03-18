@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'mongo', '~> 1.12.0'
+gem 'awesome_print'
+gem 'gitlab'
+gem 'omniauth-gitlab'
+gem 'sinatra'
+gem 'omniauth'
+gem 'chronic_duration'
+gem 'bson_ext', '~> 1.12.0'
