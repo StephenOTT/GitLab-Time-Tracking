@@ -2,6 +2,7 @@ require 'gitlab'
 # require 'mongo'
 require_relative 'issues'
 require_relative 'mongo_connection'
+require 'awesome_print'
 
 class GitLab_Downloader
 
