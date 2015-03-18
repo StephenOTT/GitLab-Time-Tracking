@@ -92,8 +92,11 @@ end # End of Class
 # m = Mongo_Connection.new("localhost", 27017, "GitLab-TimeTracking", "TimeTrackingCommits")
 # m.clear_mongo_collections
 
-# g = GitLab_Downloader.new("https://gitlab.com/api/v3", "GITLAB-PRIVATE-TOKEN")
-
+# g = GitLab_Downloader.new("https://gitlab.com/api/v3", "GITLAB-TOKEN")
+# dog = g.downloadIssuesAndComments(153287)
+# dog = g.glClient.issue_notes(153287, 162495, :per_page=>1)	
+# response = http_response_for(dog)
+# ap dog
 # issuesWithComments = g.downloadIssuesAndComments
 # m.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
 
