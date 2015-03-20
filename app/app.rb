@@ -3,9 +3,11 @@ require 'gitlab'
 require 'omniauth'
 require 'omniauth-gitlab'
 require 'sinatra'
+require 'rack-flash'
 require_relative 'gitlab_downloader'
 require_relative 'csv_exporter'
 require_relative 'mongo_connection'
+
 
 set :logging, :true
 set :show_exceptions, true 
@@ -16,6 +18,8 @@ set :session_secret, 'Password!' # TODO Change this to a ENV
 use OmniAuth::Builder do
 	provider :gitlab, ENV["GITLAB_CLIENT_ID"], ENV["GITLAB_CLIENT_SECRET"]
 end
+
+use Rack::Flash, :sweep => true
 
 
 
@@ -40,15 +44,11 @@ helpers do
 end
 
 get '/' do
-	if current_user != nil
-		'<p> Dashboard will go here </p>
-		<br>
-		<a href="/download">Download Data</a>'
-	else
-		'<h1> Welcome to GitLab Time Tracking</h1>
-		<br>
-		<a href="/sign_in">sign in with GitLab</a>'
+	if current_user == nil
+		flash[:warning] = ["You must log in to download data"]
 	end
+	
+	erb :index
 end
 
 get '/download' do
@@ -65,6 +65,7 @@ end
 get '/clear-mongo' do
 
 	mongoConnection.clear_mongo_collections
+	flash[:success] = ["Database has been cleared"]
 	redirect '/'
 
 end
