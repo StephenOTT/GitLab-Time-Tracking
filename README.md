@@ -8,7 +8,7 @@ Lightweight Time Tracking application for GitLab Issue Queues
 
 	1.1. Name: `GitLab-Time-Tracking` or whatever you want to call your application.
 	
-	1.2. Redirect URI: `http://localhost:4567/auth/gitlab/callback`
+	1.2. Redirect URI: `http://localhost:9292/auth/gitlab/callback`
 
 2. Install MongoDB (typically: `brew update`, followed by: `brew install mongodb`)
 
@@ -18,10 +18,12 @@ Lightweight Time Tracking application for GitLab Issue Queues
 
 	3.2. Open a second terminal window in the `app` folder and run: `bundle install`
 	
-	3.3. In the second terminal window, run: `GITLAB_CLIENT_ID="APPLICATION ID" GITLAB_CLIENT_SECRET="APPLICATION SECRET" MONGODB_HOST="HOST URL" MONGODB_PORT="PORT NUMBER" MONGODB_DB="DATABASE NAME" MONGODB_COLL="COLLECTION NAME" bundle exec rackup`
+	3.3. Get the Client ID/Application ID and Client Secret/Application Secret from the settings of your created/registered GitLab Application in Step 1.
+	
+	3.4. In the second terminal window, run: `GITLAB_CLIENT_ID="APPLICATION ID" GITLAB_CLIENT_SECRET="APPLICATION SECRET" MONGODB_HOST="localhost" MONGODB_PORT="27017" MONGODB_DB="GitLab" MONGODB_COLL="Issues_Time_Tracking" bundle exec rackup`
 	Get the Client ID/Application ID and Client Secret/Application Secret from the settings of your created/registered GitLab Application in Step 1.
 
-4. Go to `http://localhost:4567`
+4. Go to `http://localhost:9292`
 
 
 ## Current Features:
