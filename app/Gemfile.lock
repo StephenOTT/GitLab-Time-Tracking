@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/StephenOTT/gitlab.git
+  revision: 75ead813b4335bab2464b6af0fb776c3d746242f
+  specs:
+    gitlab (3.3.0)
+      httparty
+      terminal-table
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -5,13 +13,11 @@ GEM
     bson (1.12.0)
     bson_ext (1.12.0)
       bson (~> 1.12.0)
+    chronic (0.10.2)
     chronic_duration (0.10.6)
       numerizer (~> 0.1.1)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
-    gitlab (3.3.0)
-      httparty
-      terminal-table
     hashie (3.4.0)
     httparty (0.13.3)
       json (~> 1.8)
@@ -42,8 +48,11 @@ GEM
       oauth2 (~> 1.0)
       omniauth (~> 1.2)
     rack (1.6.0)
+    rack-flash3 (1.0.5)
+      rack
     rack-protection (1.5.3)
       rack
+    rake (10.4.2)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -57,9 +66,12 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   bson_ext (~> 1.12.0)
+  chronic
   chronic_duration
-  gitlab
+  gitlab!
   mongo (~> 1.12.0)
   omniauth
   omniauth-gitlab
+  rack-flash3
+  rake
   sinatra
