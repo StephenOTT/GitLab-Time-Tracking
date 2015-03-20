@@ -82,20 +82,21 @@ get '/download-csv' do
 end
 
 
-get '/gl-download/:projectid' do
-	# TODO move MongoConnection to a Session connection so it does not need to reconnect every time
-	# m = Mongo_Connection.new(ENV["MONGODB_HOST"], ENV["MONGODB_PORT"].to_i, ENV["MONGODB_DB"], ENV["MONGODB_COLL"])
+post '/gl-download' do
 
-	# m = Mongo_Connection.new("localhost", 27017, "GitLab-TimeTracking", "TimeTrackingCommits")
-	# @mongoConnection.clear_mongo_collections
+	if current_user == nil
+		flash[:warning] = ["You must log in to download data"]
+	else
+		post = params[:post]
+		projectID = post[:projectid]
+		endpoint = post[:endpoint]
 
-	g = GitLab_Downloader.new("https://gitlab.com/api/v3", current_user)
+		g = GitLab_Downloader.new(endpoint, current_user)
 
-	projectID = params[:projectid]
-
-	issuesWithComments = g.downloadIssuesAndComments(projectID)
-	mongoConnection.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
-
+		issuesWithComments = g.downloadIssuesAndComments(projectID)
+		mongoConnection.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
+		flash[:success] = ["Time Tracking Data has been Downloaded"]
+	end
 	redirect '/'
 
 end
