@@ -25,14 +25,14 @@ class GitLab_Downloader
 			# Iterates through each issue and get the notes and merges the notes into the issue hash.
 			issues.each do |x|
 				x = x.to_h	# Converts the ObjectifiedHash that is returned by GitLab into a Ruby Hash
-				# commentPageNum = 1
-				issueComments = @glClient.issue_notes(x["project_id"], x["id"])	# Gets the notes for the current issue
-				# issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
+				commentPageNum = 1
+				# issueComments = @glClient.issue_notes(x["project_id"], x["id"])	# Gets the notes for the current issue
+				issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
 				
 				if issueComments.length > 0
 					comments2 = []
 
-					# while issueComments.length > 0  do
+					while issueComments.length > 0  do
 						issueComments.each do |y|
 							y = y.to_h
 							
@@ -45,9 +45,9 @@ class GitLab_Downloader
 							comments2 << y
 							end
 						end
-						# commentPageNum += 1
-						# issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
-					# end
+						commentPageNum += 1
+						issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
+					end
 
 					x["comments"] = comments2 	# Merges the comments/notes into the main Issues Hash for each issue
 					
@@ -98,7 +98,3 @@ end # End of Class
 # ap dog
 # issuesWithComments = g.downloadIssuesAndComments
 # m.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
-
-
-
-
