@@ -104,14 +104,20 @@ post '/gl-download' do
 		flash[:warning] = ["You must log in to download data"]
 	else
 		post = params[:post]
-		projectID = post[:projectid]
-		endpoint = post[:endpoint]
+		# projectID = post[:projectid]
+		repoProjectID = post[:repo]
+		# endpoint = gitlab_endpoint
 
-		g = GitLab_Downloader.new(endpoint, current_user)
+		# g = GitLab_Downloader.new(endpoint, current_user["private_token"])
 
-		issuesWithComments = g.downloadIssuesAndComments(projectID)
-		mongoConnection.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
-		flash[:success] = ["Time Tracking Data has been Downloaded"]
+		issuesWithComments = gitlab_instance.downloadIssuesAndComments(repoProjectID)
+		if issuesWithComments.length > 0
+			mongoConnection.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
+			flash[:success] = ["Time Tracking Data has been Downloaded from #{gitlab_endpoint}"]
+		else
+			flash[:danger] = ["No Time Tracking Data was found"]
+		end
+
 	end
 	redirect '/'
 
@@ -119,11 +125,10 @@ end
 
 get '/auth/:name/callback' do
 	auth = request.env["omniauth.auth"]
-	# @private_token = auth["extra"]["raw_info"]["private_token"]
-		session["private_token"] = auth["extra"]["raw_info"]["private_token"]
-		
-		# Testing Code
-		# ap current_user
+	username = auth["info"]["username"]
+	private_token = auth["extra"]["raw_info"]["private_token"]
+	userID = auth["uid"]
+	session["current_user"] = {"username" => username, "private_token" => private_token}
 
 
 	# session[:user_id] = auth["uid"]
