@@ -36,7 +36,7 @@ class GitLab_Downloader
 				commentPageNum = 1
 				# issueComments = @glClient.issue_notes(x["project_id"], x["id"])	# Gets the notes for the current issue
 				issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
-				
+
 				if issueComments.length > 0
 					comments2 = []
 
