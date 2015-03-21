@@ -1,39 +1,35 @@
-<h2>Download Time Tracking Data from GitLab)</h2>
 
-<form class="form-horizontal" role="form", action="/gl-download", method="post">
-	<div class="form-group">
-		 <label for="endpoint" class="col-sm-2 control-label">GitLab API Endpoint(only supports GitLab.com at the moment</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="endpoint", name="post[endpoint]" value="https://gitlab.com/api/v3"/>
-		</div>
-	</div>
+<% if current_user != nil %>
 
-	<div class="form-group">
-		 <label for="namespace" class="col-sm-2 control-label">Namespace</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="namespace", name="post[namespace]" disabled/>
-		</div>
-	</div>
+	<h2>Download Time Tracking Data your GitLab Instance</h2>
 
-	<div class="form-group">
-		 <label for="repo" class="col-sm-2 control-label">Repository</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="repo", name="post[repo]" disabled />
-		</div>
-	</div>
+	<form class="form-horizontal" role="form", action="/gl-download", method="post">
 
-	<div class="form-group">
-		 <label for="projectid" class="col-sm-2 control-label">Project ID</label>
-		<div class="col-sm-10">
-			<input type="text" class="form-control" id="projectid", name="post[projectid]" value="153287" />
-			<p>For test purposes see project stephenott/steve (project id: 153287)</p>
+		<div class="form-group">
+			 <label for="repo" class="col-sm-2 control-label">Avaliable Repositories</label>
+			<div class="col-sm-10">
+				<select name="post[repo]", id="repo">
+					<% user_projects.each do |p| %>
+					<%= p = p.to_h %>
+						<option value= "<%= "#{p['id']}" %>" ><%= p["path_with_namespace"] %></option>
+					<% end %>
+				</select>
+			</div>
 		</div>
-	</div>
 
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			 <button type="submit" class="btn btn-default">download</button>
+<!-- 		<div class="form-group">
+			 <label for="projectid" class="col-sm-2 control-label">Project ID</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="projectid", name="post[projectid]" value="153287" />
+				<p>For test purposes see project stephenott/steve (project id: 153287)</p>
+			</div>
+		</div> -->
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				 <button type="submit" class="btn btn-default">download</button>
+			</div>
 		</div>
-	</div>
-</form>
-<hr>
+	</form>
+	<hr>
+<% end %>
