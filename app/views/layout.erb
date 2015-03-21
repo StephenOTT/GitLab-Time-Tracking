@@ -49,6 +49,10 @@
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
+			
+			<p>Endpoint: <%= gitlab_endpoint %></p>
+			<p>Logged In as: <%= current_user["username"] %></p>
+
 			<!--Messaging Code Start -->
 			<%if flash[:danger] %>
 				<% flash[:danger].each do |text| %>
