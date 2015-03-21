@@ -58,8 +58,9 @@ class GitLab_Downloader
 					end
 
 					x["comments"] = comments2 	# Merges the comments/notes into the main Issues Hash for each issue
-					
-					issues2 << x
+					if comments2.length > 0 
+						issues2 << x
+					end
 				end
 			end
 
