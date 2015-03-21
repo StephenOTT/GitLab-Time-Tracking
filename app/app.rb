@@ -28,7 +28,9 @@ use Rack::Flash, :sweep => true
 
 helpers do
 	def current_user
-		session["private_token"]
+		session["current_user"]
+	end
+
 	end
 
 	def mongoConnection
