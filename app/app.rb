@@ -47,6 +47,15 @@ helpers do
 			@mongoConnection
 		end
 	end
+
+	def gitlab_endpoint
+		ENV["GITLAB_ENDPOINT"]
+	end
+
+	def user_projects
+		
+		gitlab_instance.user_projects
+	end
 end
 
 get '/' do
