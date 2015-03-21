@@ -15,6 +15,14 @@ class GitLab_Downloader
 		@glClient
 	end
 
+	def user_projects
+		p = @glClient.projects
+		p.each do |x|
+			x = x.to_h
+		end
+		return p
+	end
+
 	def downloadIssuesAndComments(projectID)
 		# issues = @glClient.issues(153287)
 		issuePageNum = 1
