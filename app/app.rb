@@ -8,13 +8,11 @@ require_relative 'gitlab_downloader'
 require_relative 'csv_exporter'
 require_relative 'mongo_connection'
 
-
 set :logging, :true
 set :show_exceptions, true 
 
 use Rack::Session::Pool
 set :session_secret, 'Password!' # TODO Change this to a ENV
-
 
 # TODO add the ability to set the endpoint api after the app has been initilized
 use OmniAuth::Builder do
@@ -23,13 +21,10 @@ end
 
 use Rack::Flash, :sweep => true
 
-
-
 # Testing code - Outputs the Client ID and Secrect to the Console to ensure that the ENV was taken
 # ap ENV["GITLAB_CLIENT_ID"]
 # ap ENV["GITLAB_CLIENT_SECRET"]
 # End of Testing Code
-
 
 helpers do
 	def current_user
