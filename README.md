@@ -1,5 +1,7 @@
 # GitLab-Time-Tracking
 
+[![Join the chat at https://gitter.im/StephenOTT/GitLab-Time-Tracking](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/StephenOTT/GitLab-Time-Tracking?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Time Tracking application for GitLab Issue Queues built on Ruby Sinatra and MongoDB.
 
 
