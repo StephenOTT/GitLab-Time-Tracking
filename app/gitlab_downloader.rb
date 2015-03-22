@@ -3,6 +3,7 @@ require 'gitlab'
 require_relative 'issues'
 require_relative 'mongo_connection'
 require 'awesome_print'
+# require 'secure_random'
 
 class GitLab_Downloader
 
@@ -21,6 +22,22 @@ class GitLab_Downloader
 			x = x.to_h
 		end
 		return p
+	end
+
+
+	def add_admin_records(issue)
+		creationTime = Time.now
+		creationUserName = @glClient.user["username"]
+		creationUserID = @glClient.user["id"]
+		gitlabEndpoint = ENV["GITLAB_ENDPOINT"]
+		downloadID = SecureRandom.uuid
+
+		issue["admin_info"] = { "download_timestamp" => creationTime,
+							"downloaded_by_user" => creationUserName,
+							"downloaded_by_user_id" => creationUserID,
+							"gitlab_endpoint" => gitlabEndpoint,
+							"download_id" => downloadID
+						}
 	end
 
 	def downloadIssuesAndComments(projectID)
