@@ -50,7 +50,9 @@
 			</div>
 			
 			<p>Endpoint: <%= gitlab_endpoint %></p>
+			<% if current_user != nil %>
 			<p>Logged In as: <%= current_user["username"] %></p>
+			<% end %>
 
 			<!--Messaging Code Start -->
 			<%if flash[:danger] %>
