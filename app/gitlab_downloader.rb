@@ -25,16 +25,15 @@ class GitLab_Downloader
 	end
 
 
-	def add_admin_records(issue)
+	def add_admin_records
 		creationTime = Time.now
-		creationUserName = @glClient.user["username"]
-		creationUserID = @glClient.user["id"]
+		creationUser = @glClient.user.to_h
 		gitlabEndpoint = ENV["GITLAB_ENDPOINT"]
 		downloadID = SecureRandom.uuid
 
-		issue["admin_info"] = { "download_timestamp" => creationTime,
-							"downloaded_by_user" => creationUserName,
-							"downloaded_by_user_id" => creationUserID,
+		return adminRecords = { "download_timestamp" => creationTime,
+							"downloaded_by_user" => creationUser["username"],
+							"downloaded_by_user_id" => creationUser["id"],
 							"gitlab_endpoint" => gitlabEndpoint,
 							"download_id" => downloadID
 						}
@@ -65,17 +64,21 @@ class GitLab_Downloader
 							timeTrack = Gl_Issue.process_comment(y)
 							if timeTrack != nil
 								y = y.merge(timeTrack)
-							
 
 							comments2 << y
+
 							end
 						end
 						commentPageNum += 1
 						issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
 					end
-
+					
+					x["admin_info"] = add_admin_records
+					
 					x["comments"] = comments2 	# Merges the comments/notes into the main Issues Hash for each issue
+					
 					if comments2.length > 0
+						x["created_at"] = x["created_at"]
 						issues2 << x
 					end
 				end
