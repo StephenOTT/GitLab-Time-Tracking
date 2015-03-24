@@ -5,6 +5,13 @@
 Time Tracking application for GitLab Issue Queues built on Ruby Sinatra and MongoDB.
 
 
+##System Requirements
+1. GitLab Version 7.9+
+2. Ruby 2.x+
+3. MongoDB 2.x+
+
+
+
 ##Installation
 
 1. Register/Create an Application at https://gitlab.com/oauth/applications/new.  Set your fields to the following:
