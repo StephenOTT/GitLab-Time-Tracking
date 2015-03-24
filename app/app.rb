@@ -112,24 +112,25 @@ end
 
 
 post '/gl-download' do
+	post = params[:post]
 
 	if current_user == nil
 		flash[:warning] = ["You must log in to download data"]
-	else
-		post = params[:post]
-		# projectID = post[:projectid]
+	
+	elsif current_user != nil and post != nil
+
 		repoProjectID = post[:repo]
-		# endpoint = gitlab_endpoint
-
-		# g = GitLab_Downloader.new(endpoint, current_user["private_token"])
-
 		issuesWithComments = gitlab_instance.downloadIssuesAndComments(repoProjectID)
+		
 		if issuesWithComments.length > 0
 			mongoConnection.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
 			flash[:success] = ["Time Tracking Data has been Downloaded from #{gitlab_endpoint}"]
 		else
-			flash[:danger] = ["No Time Tracking Data was found"]
+			flash[:danger] = ["Unable to download Time Tracking data from #{gitlab_endpoint}: No Time Tracking Data was found"]
 		end
+	
+	elsif post == nil 
+		flash[:warning] = ["You must select a Project to download, ensure you are the member or owner of a Project at #{gitlab_endpoint}"]
 
 	end
 	redirect '/'
