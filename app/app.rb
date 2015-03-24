@@ -61,6 +61,8 @@ end
 get '/' do
 	if current_user == nil
 		flash[:warning] = ["You must <a href='/login'>Login </a> to your GitLab Instance to continue"]
+	else
+		@projectList = user_projects
 	end
 	
 	erb :index
