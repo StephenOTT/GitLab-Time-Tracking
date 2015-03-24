@@ -28,9 +28,10 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li><a href="/download-csv">Download CSV</a></li>
-						<li><a href="/clear-mongo">Clear Database</a></li>
-						<li><a href="/sign_in">Login</a></li>
+						<% if current_user != nil %>
+							<li><a href="/download-csv">Download CSV</a></li>
+							<li><a href="/clear-mongo">Clear Database</a></li>
+						<% end %>
 						<li><a href="http://www.github.com/stephenott/gitlab-time-tracking/issues">Report an Problem</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
