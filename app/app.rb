@@ -90,13 +90,24 @@ end
 
 
 get '/download-csv' do
-	dataExportConnection = CSVExporter.new(mongoConnection)
-	dataExport = dataExportConnection.get_all_issues_time
+	if current_user == nil
+		redirect '/'
+	else
+		dataExportConnection = CSVExporter.new(mongoConnection)
+		dataExport = dataExportConnection.get_all_issues_time
+		
+		if dataExport.empty? == false
 
-	content_type 'application/csv'
-	attachment "GitLab-Time-Tracking-Data.csv"
+			content_type 'application/csv'
+			attachment "GitLab-Time-Tracking-Data.csv"
 
-	csv = dataExportConnection.generateCSV(dataExport)
+			csv = dataExportConnection.generateCSV(dataExport)
+		else
+			flash[:danger] = ["Unable to generate a CSV: No time tracking data has been downloaded"]
+			redirect '/'
+		end
+	end
+	
 end
 
 
