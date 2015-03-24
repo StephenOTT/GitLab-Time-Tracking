@@ -160,8 +160,8 @@ end
 # either /log_out, /logout, /sign_out, or /signout will end the session and log the user out
 ["/sign_out/?", "/signout/?", "/log_out/?", "/logout/?"].each do |path|
 	get path do
-		# session[:user_id] = nil
-		# @private_token = nil
+		session["current_user"] = nil
+		flash[:success] = ["You were Logged out"]
 		redirect '/'
 	end
 end
