@@ -139,6 +139,7 @@ end
 
 get '/auth/:name/callback' do
 	auth = request.env["omniauth.auth"]
+	
 	username = auth["info"]["username"]
 	private_token = auth["extra"]["raw_info"]["private_token"]
 	userID = auth["uid"]
