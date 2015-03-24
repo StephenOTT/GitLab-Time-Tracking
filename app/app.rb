@@ -146,7 +146,6 @@ get '/auth/:name/callback' do
 
 	session["current_user"] = {"username" => username, "user_id" => userID, "private_token" => private_token}
 
-	# session[:user_id] = auth["uid"]
 	redirect '/'
 end
 
