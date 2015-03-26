@@ -94,14 +94,15 @@ get '/download-csv' do
 		redirect '/'
 	else
 		dataExportConnection = CSVExporter.new(mongoConnection)
-		dataExport = dataExportConnection.get_all_issues_time
-		
-		if dataExport.empty? == false
+		dataExportIssues = dataExportConnection.get_all_issues_time
+		dataExportMilestones = dataExportConnection.get_all_milestone_budgets
 
-			content_type 'application/csv'
-			attachment "GitLab-Time-Tracking-Data.csv"
+		if dataExportIssues.empty? == false or dataExportMilestones.empty? == false
 
-			csv = dataExportConnection.generateCSV(dataExport)
+			content_type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			attachment 'time-tracking.xlsx'
+
+			file = dataExportConnection.generateCSV(dataExportIssues, dataExportMilestones)
 		else
 			flash[:danger] = ["Unable to generate a CSV: No time tracking data has been downloaded"]
 			redirect '/'
