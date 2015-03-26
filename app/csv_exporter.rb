@@ -1,6 +1,7 @@
 # require 'mongo'
 # require 'faster_csv'
 # require 'awesome_print'
+require 'axlsx'
 
 class CSVExporter
 	def initialize(mongoConnection)
@@ -24,14 +25,38 @@ class CSVExporter
 
 	# end
 
-	def generateCSV(data)
+	def generateCSV(issuesData, milestoneData)
 
-		csv_string = CSV.generate do |csv|
-		  csv << data.first.keys
-		  data.each do |hash|
-		    csv << hash.values
+		# csv_string = CSV.generate do |csv|
+		#   csv << data.first.keys
+		#   data.each do |hash|
+		# 	csv << hash.values
+		#   end
+		# end
+
+		Axlsx::Package.new do |p|
+		  p.workbook.add_worksheet(:name => "Issues") do |sheet|
+			sheet.add_row issuesData.first.keys
+		    
+		    issuesData.each do |hash|
+				sheet.add_row hash.values
+		  	end
+
 		  end
+		  p.workbook.add_worksheet(:name => "Milestones") do |sheet|
+			sheet.add_row milestoneData.first.keys
+
+		    milestoneData.each do |hash|
+				sheet.add_row hash.values
+		  	end
+
+		  end
+
+		  return p.to_stream
 		end
+
+
+
 
 	end
 
