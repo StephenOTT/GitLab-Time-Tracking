@@ -80,6 +80,12 @@ class CSVExporter
 							project_id: 1, 
 							id: 1,
 							iid: 1,
+							type: "$comments.time_tracking_data.type",
+							milestone_number: "$milestone.iid",
+							milestone_title: "$milestone.title",
+							milestone_budget_comment: "$milestone.milestone_budget_data.budget_comment",
+							milestone_state: "$milestone.state",
+							milestone_due_date: "$milestone.due_date",
 							issue_title: "$title",
 							state: 1,
 							issue_author: "$author.username",
@@ -89,7 +95,7 @@ class CSVExporter
 							time_track_work_date: "$comments.time_tracking_data.work_date",
 							time_track_time_comment: "$comments.time_tracking_data.time_comment",
 							time_track_work_date_provided: "$comments.time_tracking_data.work_date_provided",
-							time_track_work_logged_by: "$comments.time_tracking_data.work_logged_by" }},			
+							time_track_work_logged_by: "$comments.time_tracking_data.work_logged_by"}},			
 			# { "$unwind" => "$comments.time_tracking_data" },
 
 
@@ -119,7 +125,6 @@ class CSVExporter
 		# end
 		# return output
 	end
-end
 
 	def get_all_milestone_budgets
 		# TODO add filtering and extra security around query
@@ -182,10 +187,21 @@ end
 	end
 
 
+end
 
+# date = "2015-03-24T21:47:04.266Z"
+# covert =  DateTime.strptime(date, '%Y-%m-%dT%H:%M:%S%z').to_time.utc
+# puts convert
 # Testing Code
 # m = CSVExporter.new("localhost", 27017, "GitLab", "Issues_Time_Tracking")
-# export = m.get_all_issues_time
+
+# m = Mongo_Connection.new("localhost", 27017, "GitLab", "Issues_Time_Tracking") 
+# csv = CSVExporter.new(m)
+# export1 = csv.get_all_issues_time
+# export2 = csv.get_all_milestone_budgets
+# csv.generateCSV(export1, export2)
+
+# ap export.get_all_milestone_budgets
 # ap export
 
 # CSV.open("data.csv", "wb") do |csv|
