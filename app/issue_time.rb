@@ -16,7 +16,7 @@ module Gl_Issue_Time
 			overviewDetails = {"type" => type,
 								"comment_id" => issueComment["id"],
 								"work_logged_by" => issueComment["author"]["username"],
-								"comment_created_date" => issueComment["created_at"],
+								# "comment_created_date" => issueComment["created_at"],
 								# "comment_last_updated_date" =>issueComment.attrs[:updated_at],
 								"record_creation_date" => Time.now.utc}
 			mergedHash = parsedTimeDetails.merge(overviewDetails)
