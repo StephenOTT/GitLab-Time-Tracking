@@ -94,6 +94,66 @@ class CSVExporter
 	end
 end
 
+	def get_all_milestone_budgets
+		# TODO add filtering and extra security around query
+		totalMileStoneBudgetHoursBreakdown = @mongoConnection.aggregate([
+			# { "$match" => { project_id: projectID }},
+
+			# { "$unwind" => "$comments" },
+			{"$project" => {_id: 0,
+							project_id: 1, 
+							id: 1,
+							iid: 1,
+							type: "$milestone.milestone_budget_data.type",
+							milestone_number: "$milestone.iid",
+							milestone_title: "$milestone.title",
+							milestone_budget_comment: "$milestone.milestone_budget_data.budget_comment",
+							milestone_state: "$milestone.state",
+							milestone_due_date: "$milestone.due_date",
+							milestone_budget_duration: "$milestone.milestone_budget_data.duration",
+							}},
+			{ "$group" => {_id: { 
+							type: "$type",
+							milestone_number: "$milestone_number",
+							project_id: "$project_id", 
+							id: "$id",
+							iid: "$iid",
+							milestone_number: "$milestone_number",
+							milestone_title: "$milestone_title",
+							milestone_budget_comment: "$milestone_budget_comment",
+							milestone_state: "$milestone_state",
+							milestone_due_date: "$milestone_due_date",
+							milestone_budget_duration: "$milestone_budget_duration",
+			}}}
+
+			# { "$unwind" => "$comments.time_tracking_data" },
+
+
+			# { "$match" => { "comments.time_tracking_commits.type" => { "$in" => ["Issue Time"] }}},
+			# { "$group" => { _id: {
+			# 				project_id: "$project_id",
+			# 				id: "$id",
+			# 				iid: "$iid",
+			# 				title: "$title",
+			# 				state: "$state",
+			# 				issue_author: "$author.username",
+			# 				comment_id: "$comment.id",
+			# 				comment_author: "$comment.author.username",
+			# 				time_track_duration: "$comment.time_tracking_data.duration",
+			# 				time_track_non_billable: "$comment.time_tracking_data.non_billable",
+			# 				time_track_work_date: "$comment.time_tracking_data.work_date",
+			# 				time_track_time_comment: "$comment.time_tracking_data.time_comment",
+			# 				},
+
+			# 				}}
+							])
+		output = []
+		totalMileStoneBudgetHoursBreakdown.each do |x|
+			output << x["_id"]
+		end
+		return output
+	end
+
 
 
 # Testing Code
