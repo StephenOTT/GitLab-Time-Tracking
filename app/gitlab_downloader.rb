@@ -1,6 +1,7 @@
 require 'gitlab'
 # require 'mongo'
 require_relative 'issues'
+require_relative 'milestones'
 require_relative 'mongo_connection'
 require 'awesome_print'
 # require 'secure_random'
@@ -84,6 +85,12 @@ class GitLab_Downloader
 					if x["milestone"] != nil
 						x["milestone"]["created_at"] = DateTime.strptime(x["milestone"]["created_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc
 						x["milestone"]["updated_at"] = DateTime.strptime(x["milestone"]["updated_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc
+
+						milestoneBudgetTrack = Gl_Milestone.process_milestone(x["milestone"])
+						if milestoneBudgetTrack != nil
+							x["milestone"]["milestone_budget_data"] = milestoneBudgetTrack
+						end
+					end
 					
 					x["admin_info"] = add_admin_records
 					
