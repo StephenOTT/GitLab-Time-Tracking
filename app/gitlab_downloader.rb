@@ -30,7 +30,7 @@ class GitLab_Downloader
 	def add_admin_records
 		creationTime = Time.now
 		creationUser = @glClient.user.to_h
-		gitlabEndpoint = ENV["GITLAB_ENDPOINT"]
+		gitlabEndpoint = ENV["GITLAB_ENDPOINT"] + (ENV['ENDPOINT_API_ADDRESS'] || "/api/v3")
 		downloadID = SecureRandom.uuid
 
 		return adminRecords = { "download_timestamp" => creationTime,
