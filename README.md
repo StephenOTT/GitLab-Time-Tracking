@@ -30,7 +30,7 @@ Time Tracking application for GitLab Issue Queues built on Ruby Sinatra and Mong
 	
 	3.3. Get the Client ID/Application ID and Client Secret/Application Secret from the settings of your created/registered GitLab Application in Step 1.
 	
-	3.4. In the second terminal window copy the below, add your Client ID and Client Secret, and run: `GITLAB_ENDPOINT="https://gitlab.com/api/v3" GITLAB_CLIENT_ID="APPLICATION_ID" GITLAB_CLIENT_SECRET="APPLICATION_SECRET" MONGODB_HOST="localhost" MONGODB_PORT="27017" MONGODB_DB="GitLab" MONGODB_COLL="Issues_Time_Tracking" bundle exec rackup`
+	3.4. In the second terminal window copy the below, add your Client ID and Client Secret, and run: `GITLAB_ENDPOINT="https://gitlab.com/" GITLAB_CLIENT_ID="APPLICATION_ID" GITLAB_CLIENT_SECRET="APPLICATION_SECRET" MONGODB_HOST="localhost" MONGODB_PORT="27017" MONGODB_DB="GitLab" MONGODB_COLL="Issues_Time_Tracking" bundle exec rackup`
 	
 
 4. Go to `http://localhost:9292`

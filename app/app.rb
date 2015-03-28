@@ -16,7 +16,10 @@ set :session_secret, 'Password!' # TODO Change this to a ENV
 
 # TODO add the ability to set the endpoint api after the app has been initilized
 use OmniAuth::Builder do
-	provider :gitlab, ENV["GITLAB_CLIENT_ID"], ENV["GITLAB_CLIENT_SECRET"]
+	provider :gitlab, ENV["GITLAB_CLIENT_ID"], ENV["GITLAB_CLIENT_SECRET"],
+			client_options: {
+				site: ENV["GITLAB_ENDPOINT"]
+			}
 end
 
 use Rack::Flash, :sweep => true
@@ -49,7 +52,7 @@ helpers do
 	end
 
 	def gitlab_endpoint
-		ENV["GITLAB_ENDPOINT"]
+		ENV["GITLAB_ENDPOINT"] + (ENV['ENDPOINT_API_ADDRESS'] || "/api/v3")
 	end
 
 	def user_projects
