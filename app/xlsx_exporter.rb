@@ -5,7 +5,7 @@
 
 require 'axlsx'
 
-class CSVExporter
+class XLSXExporter
 	def initialize(mongoConnection)
 		@mongoConnection = mongoConnection
 	end
@@ -27,14 +27,7 @@ class CSVExporter
 
 	# end
 
-	def generateCSV(issuesData, milestoneData)
-
-		# csv_string = CSV.generate do |csv|
-		#   csv << data.first.keys
-		#   data.each do |hash|
-		# 	csv << hash.values
-		#   end
-		# end
+	def generateXLSX(issuesData, milestoneData)
 
 		Axlsx::Package.new do |p|
 		  p.workbook.add_worksheet(:name => "Issues") do |sheet|
@@ -51,24 +44,11 @@ class CSVExporter
 		    milestoneData.each do |hash|
 				sheet.add_row hash.values
 		  	end
-
 		  end
 
 		  return p.to_stream
 		end
-
-
-
-
 	end
-
-
-	# Gets the number of time tracking records
-	# to be used by the CSV download call to determine if there are any records to downloads
-	def record_count
-		# TODO
-	end
-
 
 	def get_all_issues_time
 		# TODO add filtering and extra security around query

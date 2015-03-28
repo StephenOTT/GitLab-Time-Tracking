@@ -5,7 +5,7 @@ require 'omniauth-gitlab'
 require 'sinatra'
 require 'rack-flash'
 require_relative 'gitlab_downloader'
-require_relative 'csv_exporter'
+require_relative 'xlsx_exporter'
 require_relative 'mongo_connection'
 
 set :logging, :true
@@ -71,17 +71,6 @@ get '/' do
 	erb :index
 end
 
-get '/download' do
-
-	'<a href="/gl-download/153287">Download data from GitLab into MongoDB (project id: 153287)</a>
-	<p>url pattern is: localhost:4567/gl-download/PROJECT_ID
-	<br><br>
-	<a href="/download-csv">Download data from MongoDB to .CSV</a>
-	<br>
-	<a href="/clear-mongo">Clear MongoDB Database</a>'
-
-end
-
 get '/clear-mongo' do
 
 	mongoConnection.clear_mongo_collections
@@ -90,13 +79,11 @@ get '/clear-mongo' do
 
 end
 
-
-
-get '/download-csv' do
+get '/download-xlsx' do
 	if current_user == nil
 		redirect '/'
 	else
-		dataExportConnection = CSVExporter.new(mongoConnection)
+		dataExportConnection = XLSXExporter.new(mongoConnection)
 		dataExportIssues = dataExportConnection.get_all_issues_time
 		dataExportMilestones = dataExportConnection.get_all_milestone_budgets
 
@@ -105,9 +92,9 @@ get '/download-csv' do
 			content_type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 			attachment 'time-tracking.xlsx'
 
-			file = dataExportConnection.generateCSV(dataExportIssues, dataExportMilestones)
+			file = dataExportConnection.generateXLSX(dataExportIssues, dataExportMilestones)
 		else
-			flash[:danger] = ["Unable to generate a CSV: No time tracking data has been downloaded"]
+			flash[:danger] = ["Unable to generate a xlsx: No time tracking data has been downloaded"]
 			redirect '/'
 		end
 	end
@@ -155,6 +142,7 @@ end
 
 # any of the following routes should work to sign the user in: 
 #   /sign_up, /signup, /sign_in, /signin, /log_in, /login
+# TODO make only a single signin url
 ["/sign_in/?", "/signin/?", "/log_in/?", "/login/?", "/sign_up/?", "/signup/?"].each do |path|
 	get path do
 		redirect '/auth/gitlab'
@@ -162,6 +150,7 @@ end
 end
 
 # either /log_out, /logout, /sign_out, or /signout will end the session and log the user out
+# TODO make only a single signout url
 ["/sign_out/?", "/signout/?", "/log_out/?", "/logout/?"].each do |path|
 	get path do
 		session["current_user"] = nil

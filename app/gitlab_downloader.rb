@@ -30,6 +30,9 @@ class GitLab_Downloader
 	def add_admin_records
 		creationTime = Time.now
 		creationUser = @glClient.user.to_h
+
+		# TODO use a variable from when this class is inilized to get the URL.
+		# TODO make the enpoint that is displaed to the user more "Friendly" aka drop /api/v3.
 		gitlabEndpoint = ENV["GITLAB_ENDPOINT"] + (ENV['ENDPOINT_API_ADDRESS'] || "/api/v3")
 		downloadID = SecureRandom.uuid
 
@@ -106,7 +109,7 @@ class GitLab_Downloader
 			issuePageNum += 1
 			issues = @glClient.issues(projectID, :per_page=>100, :page=>issuePageNum)
 		end
-	issues2
+	return issues2
 	end # End of Method
 end # End of Class
 
