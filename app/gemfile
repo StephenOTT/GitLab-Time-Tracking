@@ -9,6 +9,7 @@ gem 'sinatra'
 gem 'omniauth'
 gem 'chronic_duration'
 gem 'bson_ext', '~> 1.12.0'
+
 gem 'rake'
 gem 'chronic'
 gem 'rack-flash3'
