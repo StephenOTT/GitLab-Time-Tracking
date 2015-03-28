@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'mongo', '~> 1.12.0'
 gem 'awesome_print'
 # gem 'gitlab'
-gem "gitlab", :git=>"https://github.com/StephenOTT/gitlab.git"
+gem "gitlab", :git=>"https://github.com/NARKOZ/gitlab.git"
 gem 'omniauth-gitlab'
 gem 'sinatra'
 gem 'omniauth'

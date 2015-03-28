@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/StephenOTT/gitlab.git
-  revision: 75ead813b4335bab2464b6af0fb776c3d746242f
+  remote: https://github.com/NARKOZ/gitlab.git
+  revision: 8dcfec5aaaff9ef1c12687c5f9ca90f6aed0f912
   specs:
     gitlab (3.3.0)
       httparty
