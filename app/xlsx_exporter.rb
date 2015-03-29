@@ -136,7 +136,6 @@ class XLSXExporter
 							project_id: "$project_id", 
 							id: "$id",
 							iid: "$iid",
-							milestone_number: "$milestone_number",
 							milestone_title: "$milestone_title",
 							milestone_budget_comment: "$milestone_budget_comment",
 							milestone_state: "$milestone_state",
