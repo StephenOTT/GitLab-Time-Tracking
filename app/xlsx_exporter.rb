@@ -174,24 +174,9 @@ class XLSXExporter
 
 end
 
-# date = "2015-03-24T21:47:04.266Z"
-# covert =  DateTime.strptime(date, '%Y-%m-%dT%H:%M:%S%z').to_time.utc
-# puts convert
+
 # Testing Code
-# m = CSVExporter.new("localhost", 27017, "GitLab", "Issues_Time_Tracking")
 
 # m = Mongo_Connection.new("localhost", 27017, "GitLab", "Issues_Time_Tracking") 
-# csv = CSVExporter.new(m)
-# export1 = csv.get_all_issues_time
-# export2 = csv.get_all_milestone_budgets
-# csv.generateCSV(export1, export2)
 
 # ap export.get_all_milestone_budgets
-# ap export
-
-# CSV.open("data.csv", "wb") do |csv|
-#   csv << export.first.keys # adds the attributes name on the first line
-#   export.each do |hash|
-#     csv << hash.values
-#   end
-# end
