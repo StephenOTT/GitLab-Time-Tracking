@@ -39,11 +39,16 @@ class XLSXExporter
 
 		  end
 		  p.workbook.add_worksheet(:name => "Milestones") do |sheet|
-			sheet.add_row milestoneData.first.keys
+			if milestoneData.empty? == false
+				sheet.add_row milestoneData.first.keys
+			    
+			    milestoneData.each do |hash|
+					sheet.add_row hash.values
+			  	end
 
-		    milestoneData.each do |hash|
-				sheet.add_row hash.values
-		  	end
+			  elsif milestoneData.empty? == true
+			  	sheet.add_row ["No Milestone Data"]
+			  end
 		  end
 
 		  return p.to_stream
