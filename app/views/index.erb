@@ -11,14 +11,14 @@
 			<div class="col-sm-10">
 				<table style="width:100%">
 					<tr>
-						<th>Project ID</th>
+						<th>Project</th>
 						<th>Download Date</th> 
 						<th>Downloaded By</th>
 						<th style="display:none;">Download ID</th>
 					</tr>
 					<% @adminQueries.each do |aq| %>
 						<tr>
-							<td ><%= aq["project_id"] %></td>
+							<td ><%= aq["project_name"] %></td>
 							<td><%= aq["download_date"] %></td>
 							<td><%= aq["downloaded_by"] %></td>
 							<td style="display:none;"><%= aq["download_id"] %></td>
@@ -27,11 +27,11 @@
 				</table>
 			</div>
 		</div>
-		<div class="form-group">
+<!-- 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				 <button type="submit" class="btn btn-default">Button</button>
 			</div>
-		</div>
+		</div> -->
 	</form>
 
 	<hr>
