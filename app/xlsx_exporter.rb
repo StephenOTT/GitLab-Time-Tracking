@@ -114,7 +114,8 @@ class XLSXExporter
 	def get_all_milestone_budgets
 		# TODO add filtering and extra security around query
 		totalMileStoneBudgetHoursBreakdown = @mongoConnection.aggregate([
-			# { "$match" => { project_id: projectID }},
+			{ "$match" => { milestone: { "$ne" => nil} }},
+			
 
 			# { "$unwind" => "$comments" },
 			{"$project" => {_id: 0,
