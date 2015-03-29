@@ -1,7 +1,6 @@
 # require_relative '../mongo_connection'
 # require "awesome_print"
 
-
 class Admin_Queries
 	def initialize(mongoConnection)
 		@mongoConnection = mongoConnection
@@ -17,11 +16,11 @@ class Admin_Queries
 							download_date: "$admin_info.download_timestamp",
 							downloaded_by: "$admin_info.downloaded_by_user",
 							download_endpoint: "$admin_info.gitlab_endpoint",
-							project_id: "$project_id"
+							project_id: "$project_id",
+							project_name: "$project_info.path_with_namespace"
 							}}
 							])
 	end
-
 end
 
 # Testing Code
