@@ -65,10 +65,9 @@ helpers do
 		ENV["GITLAB_ENDPOINT"] + (ENV['ENDPOINT_API_ADDRESS'] || "/api/v3")
 	end
 
-	def user_projects
-		
-		gitlab_instance.user_projects
-	end
+	# def user_projects
+	# 	gitlab_instance.user_projects
+	# end
 end
 
 get '/' do
