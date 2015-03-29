@@ -74,7 +74,7 @@ get '/' do
 	if current_user == nil
 		flash[:warning] = ["You must <a href='/login'>Login </a> to your GitLab Instance to continue"]
 	else
-		@projectList = user_projects
+		@projectList = gitlab_instance.user_projects
 		@adminQueries = admin_queries.get_downloads
 	end
 	
