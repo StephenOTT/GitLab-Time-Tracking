@@ -7,6 +7,7 @@ require 'rack-flash'
 require_relative 'gitlab_downloader'
 require_relative 'xlsx_exporter'
 require_relative 'mongo_connection'
+require_relative 'aggregations/admin_queries'
 
 set :logging, :true
 set :show_exceptions, true 
@@ -43,6 +44,15 @@ helpers do
 		end
 	end
 
+
+	def admin_queries
+		if @aq == nil
+			@aq = Admin_Queries.new(mongoConnection)
+		else
+			@aq
+		end
+	end
+
 	def mongoConnection
 		if @mongoConnection == nil
 			@mongoConnection = Mongo_Connection.new(ENV["MONGODB_HOST"], ENV["MONGODB_PORT"].to_i, ENV["MONGODB_DB"], ENV["MONGODB_COLL"])  
@@ -66,6 +76,7 @@ get '/' do
 		flash[:warning] = ["You must <a href='/login'>Login </a> to your GitLab Instance to continue"]
 	else
 		@projectList = user_projects
+		@adminQueries = admin_queries.get_downloads
 	end
 	
 	erb :index
