@@ -178,5 +178,9 @@ end
 # Testing Code
 
 # m = Mongo_Connection.new("localhost", 27017, "GitLab", "Issues_Time_Tracking") 
+# export = XLSXExporter.new(m)
+
 
 # ap export.get_all_milestone_budgets
+# ap export.get_all_issues_time
+
