@@ -98,13 +98,16 @@ get '/clear-mongo' do
 
 end
 
-get '/download-xlsx' do
+get '/download-xlsx/:downloadID' do
+	downloadID = params[:downloadID]
+
 	if current_user == nil
 		redirect '/'
-	else
+	elsif current_user != nil and downloadID != nil
+		
 		dataExportConnection = XLSXExporter.new(mongoConnection)
-		dataExportIssues = dataExportConnection.get_all_issues_time
-		dataExportMilestones = dataExportConnection.get_all_milestone_budgets
+		dataExportIssues = dataExportConnection.get_all_issues_time(downloadID)
+		dataExportMilestones = dataExportConnection.get_all_milestone_budgets(downloadID)
 
 		if dataExportIssues.empty? == false or dataExportMilestones.empty? == false
 
