@@ -54,6 +54,14 @@ helpers do
 		end
 	end
 
+	def issue_stat_queries
+		if @isq == nil
+			@isq = Issue_Stat_Queries.new(mongoConnection)
+		else
+			@isq
+		end
+	end
+
 	def mongoConnection
 		if @mongoConnection == nil
 			@mongoConnection = Mongo_Connection.new(ENV["MONGODB_HOST"], ENV["MONGODB_PORT"].to_i, ENV["MONGODB_DB"], ENV["MONGODB_COLL"])  
