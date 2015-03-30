@@ -119,6 +119,9 @@ get '/download-xlsx/:downloadID' do
 			flash[:danger] = ["Unable to generate a xlsx: No time tracking data has been downloaded"]
 			redirect '/'
 		end
+	else
+		flash[:danger] = ["Error Location 001: Something went wrong"]
+		redirect '/'
 	end
 	
 end
