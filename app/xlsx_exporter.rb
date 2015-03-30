@@ -55,13 +55,13 @@ class XLSXExporter
 		end
 	end
 
-	def get_all_issues_time
+	def get_all_issues_time(downloadID)
 		# TODO add filtering and extra security around query
 		totalIssueSpentHoursBreakdown = @mongoConnection.aggregate([
-			# { "$match" => { project_id: projectID }},
 
-			{ "$unwind" => "$comments" },
+			{ "$unwind" => "$comments"},
 			{"$project" => {_id: 0,
+							download_id: "$admin_info.download_id",
 							project_id: 1, 
 							id: 1,
 							iid: 1,
@@ -81,6 +81,9 @@ class XLSXExporter
 							time_track_time_comment: "$comments.time_tracking_data.time_comment",
 							time_track_work_date_provided: "$comments.time_tracking_data.work_date_provided",
 							time_track_work_logged_by: "$comments.time_tracking_data.work_logged_by"}},			
+			
+			{ "$match" => {download_id: downloadID}},
+
 			# { "$unwind" => "$comments.time_tracking_data" },
 
 
@@ -111,14 +114,14 @@ class XLSXExporter
 		# return output
 	end
 
-	def get_all_milestone_budgets
+	def get_all_milestone_budgets(downloadID)
 		# TODO add filtering and extra security around query
 		totalMileStoneBudgetHoursBreakdown = @mongoConnection.aggregate([
-			{ "$match" => { milestone: { "$ne" => nil} }},
-			
 
+			{ "$match" => { milestone: { "$ne" => nil} }},
 			# { "$unwind" => "$comments" },
 			{"$project" => {_id: 0,
+							download_id: "$admin_info.download_id",
 							project_id: 1, 
 							id: 1,
 							iid: 1,
@@ -130,7 +133,9 @@ class XLSXExporter
 							milestone_due_date: "$milestone.due_date",
 							milestone_budget_duration: "$milestone.milestone_budget_data.duration",
 							}},
-			{ "$group" => {_id: { 
+			{ "$match" => {download_id: downloadID}},
+			{ "$group" => {_id: {
+							download_id: "$download_id", 
 							type: "$type",
 							milestone_number: "$milestone_number",
 							project_id: "$project_id", 
@@ -181,6 +186,6 @@ end
 # export = XLSXExporter.new(m)
 
 
-# ap export.get_all_milestone_budgets
-# ap export.get_all_issues_time
+# ap export.get_all_milestone_budgets("ddaed040-7c1a-4829-a07d-1d8608469ef4")
+# ap export.get_all_issues_time("ddaed040-7c1a-4829-a07d-1d8608469ef4")
 
