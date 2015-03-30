@@ -1,5 +1,5 @@
-require_relative '../mongo_connection'
-require "awesome_print"
+# require_relative '../mongo_connection'
+# require "awesome_print"
 
 
 class Issue_Stat_Queries
@@ -80,13 +80,53 @@ class Issue_Stat_Queries
 			# end
 			# return output
 	end
+
+	def get_all_issues_time(downloadID)
+		output = @mongoConnection.aggregate([
+			# { "$match" => { downloaded_by_username: githubAuthInfo[:username], downloaded_by_userID: githubAuthInfo[:userID] }},
+			# { "$unwind" => "$comments" },
+			# { "$match" => { admin_info: {download_id: downloadID}}},
+			{ "$unwind" => "$comments" },
+			{"$project" => {_id: 0, 
+							download_id: "$admin_info.download_id",
+							project: "$project_info.path_with_namespace",
+							issue_number: "$iid",
+							issue_title: "$title",
+							issue_state: "$state",
+							duration: "$comments.time_tracking_data.duration"
+							}},
+			{ "$match" => {download_id: downloadID}},
+			# { "$unwind" => "$comments" },
+			
+			{ "$group" => { _id: {
+								project: "$project",
+								# milestone_number: "$milestone_number",
+								issue_number: "$issue_number",
+								issue_title: "$issue_title",
+								issue_state: "$issue_state",
+								},
+								time_duration_sum: { "$sum" => "$duration" },
+								time_comment_count: {"$sum" => 1}
+								}
+							},
+			# { "$match" => {download_id: downloadID}},
+							])
+		output.each do |x|
+			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
+			x["_id"]["time_comment_count"] = x["time_comment_count"]
+		end
+		return output.map { |e| e["_id"]  }
+	end
+
+
+
 	
 
 end
 
 # Testing Code
-m = Mongo_Connection.new("localhost", 27017, "GitLab", "Issues_Time_Tracking") 
-output = Issue_Stat_Queries.new(m)
+# m = Mongo_Connection.new("localhost", 27017, "GitLab", "Issues_Time_Tracking") 
+# output = Issue_Stat_Queries.new(m)
 
-ap output.get_issues_time
-
+# ap output.get_issues_time
+# ap output.get_all_issues_time("abdd1c36-4cb0-4828-bbe0-34a1d679ca2f")
