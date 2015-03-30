@@ -11,15 +11,16 @@ class Admin_Queries
 		output = @mongoConnection.aggregate([
 			# { "$match" => { project_id: projectID }},
 
-			{"$project" => {_id: 0,
+			{"$group" => {_id: {
 							download_id: "$admin_info.download_id", 
 							download_date: "$admin_info.download_timestamp",
 							downloaded_by: "$admin_info.downloaded_by_user",
 							download_endpoint: "$admin_info.gitlab_endpoint",
 							project_id: "$project_id",
 							project_name: "$project_info.path_with_namespace"
-							}}
+							}}}
 							])
+		output = output.map { |e| e["_id"]  }
 	end
 end
 
