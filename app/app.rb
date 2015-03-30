@@ -138,6 +138,21 @@ post '/gl-download' do
 
 end
 
+
+get '/analyze/:downloadID' do
+	@downloadID = params[:downloadID]
+
+	if current_user == nil
+		flash[:warning] = ["You must log in to download data"]
+		redirect '/'
+	elsif current_user != nil and @downloadID != nil
+		@allIssuesTime = issue_stat_queries.get_all_issues_time(@downloadID)
+		erb :analyze
+	end
+
+end
+
+
 get '/auth/:name/callback' do
 	auth = request.env["omniauth.auth"]
 	
