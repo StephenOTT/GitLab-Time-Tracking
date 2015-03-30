@@ -1,0 +1,32 @@
+
+
+<h2>Issue Stats Analysis:</h2>
+<a href="/download-xlsx/<%= @downloadID %>">Download XSLX file: Include Issues and Milestone Data</a>
+	<div class="col-lg-10">
+		<table style="width:100%">
+			<tr>
+				<th class="text-center">Project</th>
+				<th class="text-center">Issue Number</th> 
+				<th class="text-center">Issue State</th>
+				<th class="text-center">Issue Title</th>
+				<th class="text-center">Logged Time (Seconds)</th>
+				<th class="text-center">Logged Time Comment Count</th>
+			</tr>
+			<% @allIssuesTime.each do |ait| %>
+				<tr>
+					<td class="text-center"><%= ait["project"] %></td>
+					<td class="text-center"><%= ait["issue_number"] %></td>
+					<td class="text-center"><%= ait["issue_state"] %></td>
+					<td class="text-center"><%= ait["issue_title"] %></td>
+					<td class="text-center"><%= ait["time_duration_sum"] %></td>
+					<td class="text-center"><%= ait["time_comment_count"] %></td>
+				</tr>						
+			<% end %>
+		</table>
+	</div>
+
+<hr>
+<h2>Milestone Stats Analysis:</h2>
+<h2>User Stats Analysis:</h2>
+<h2>Calendar/Dates Stats Analysis:</h2>
+<h2>Workload Stats Analysis:</h2>
