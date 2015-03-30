@@ -14,6 +14,7 @@
 						<th>Project</th>
 						<th>Download Date</th> 
 						<th>Downloaded By</th>
+						<th>Action</th>
 						<th style="display:none;">Download ID</th>
 					</tr>
 					<% @adminQueries.each do |aq| %>
@@ -21,7 +22,7 @@
 							<td ><%= aq["project_name"] %></td>
 							<td><%= aq["download_date"] %></td>
 							<td><%= aq["downloaded_by"] %></td>
-							<td style="display:none;"><%= aq["download_id"] %></td>
+							<td><a href="/analyze/<%= aq["download_id"] %>">View Time Logs</a></td>
 						</tr>						
 					<% end %>
 				</table>
