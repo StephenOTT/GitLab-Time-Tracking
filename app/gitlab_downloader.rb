@@ -47,6 +47,8 @@ class GitLab_Downloader
 	def downloadIssuesAndComments(projectID)
 		projectInfo = @glClient.project(projectID)
 		projectInfo = projectInfo.to_h
+
+		admin_info = add_admin_records
 		
 		issuePageNum = 1
 		issues = @glClient.issues(projectID, :per_page=>100, :page=>issuePageNum)
@@ -105,7 +107,7 @@ class GitLab_Downloader
 
 						x["project_info"] = projectInfo
 
-						x["admin_info"] = add_admin_records
+						x["admin_info"] = admin_info
 						x["comments"] = comments2 	# Merges the comments/notes into the main Issues Hash for each issue
 
 						issues2 << x
