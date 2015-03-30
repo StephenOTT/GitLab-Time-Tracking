@@ -8,6 +8,7 @@ require_relative 'gitlab_downloader'
 require_relative 'xlsx_exporter'
 require_relative 'mongo_connection'
 require_relative 'aggregations/admin_queries'
+require_relative 'aggregations/issue_stat_queries'
 
 set :logging, :true
 set :show_exceptions, true 
