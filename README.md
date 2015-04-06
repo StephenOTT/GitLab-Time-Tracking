@@ -40,10 +40,10 @@ Time Tracking application for GitLab Issue Queues built on Ruby Sinatra and Mong
 
 1. Download Issue Time Tracking Data from Multiple GitLab Projects.
 2. Clear MongoDB Database Collection.
-3. Download XLAX Version of Time Tracking Data.
+3. Download XLSX Version of Time Tracking Data.
 4. Download of Milestone Budget data for Milestones that are attached to Issues.
 5. For Each downloaded dataset you can view the time tracking logs related to the specific download.
-6. Download specific XLSX file for each downloaded data set.
+6. Download specific XLSX file for each downloaded data set/snapshots.
 
 
 ## Notes
