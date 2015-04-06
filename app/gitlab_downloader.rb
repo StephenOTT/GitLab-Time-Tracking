@@ -96,7 +96,10 @@ class GitLab_Downloader
 						if x["milestone"] != nil
 							x["milestone"]["created_at"] = DateTime.strptime(x["milestone"]["created_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc
 							x["milestone"]["updated_at"] = DateTime.strptime(x["milestone"]["updated_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc
-							x["milestone"]["due_date"] = DateTime.strptime(x["milestone"]["due_date"], '%Y-%m-%d').to_time.utc
+							
+							if x["milestone"]["due_date"] != nil
+								x["milestone"]["due_date"] = DateTime.strptime(x["milestone"]["due_date"], '%Y-%m-%d').to_time.utc
+							end
 
 
 							milestoneBudgetTrack = Gl_Milestone.process_milestone(x["milestone"])	# Process the milestone data for budget tracking information.
