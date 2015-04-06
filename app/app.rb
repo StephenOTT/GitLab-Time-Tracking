@@ -163,7 +163,7 @@ post '/gl-download' do
 end
 
 get '/analyze/:downloadID' do
-	@downloadID = params[:downloadID]
+	downloadID = params[:downloadID]
 
 	if current_user == nil
 		flash[:warning] = ["You must log in to download data"]
