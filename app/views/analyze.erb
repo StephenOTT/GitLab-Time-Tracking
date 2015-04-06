@@ -1,29 +1,49 @@
 
+<h2>Analysis:</h2>
 
-<h2>Issue Stats Analysis:</h2>
-<a href="/download-xlsx/<%= @downloadID %>">Download XSLX file: Include Issues and Milestone Data</a>
-	<div class="col-lg-10">
-		<table style="width:100%">
-			<tr>
-				<th class="text-center">Project</th>
-				<th class="text-center">Issue Number</th> 
-				<th class="text-center">Issue State</th>
-				<th class="text-center">Issue Title</th>
-				<th class="text-center">Logged Time (Seconds)</th>
-				<th class="text-center">Logged Time Comment Count</th>
-			</tr>
-			<% @allIssuesTime.each do |ait| %>
+<h3>Project Info:</h3>
+
+<p>Project: <%= @snapshot_info["project_info"]["path_with_namespace"] %></p>
+<p>Snapshot Created at: <%= @snapshot_info["admin_info"]["download_timestamp"] %></p>
+<p>Snapshot Created By: <%= @snapshot_info["admin_info"]["downloaded_by_user"] %></p>
+
+<br>
+
+<h4>Time Log Breakdown:</h4>
+	<% @milestones.each do |m| %>
+		<p><strong> Milestone Number: <%= m["milestone_number"] %></strong></p>
+		<p> State: <%= m["milestone_state"] %></p>
+		<p> Title: <%= m["milestone_title"] %></p>
+		<p> Budget: <%= budget = m["milestone_budget_duration"].to_i %></p>
+		<p> Due Date: <%= m["milestone_due_date"] %></p>
+		<p> Sum of Time Logs assoicated with Milestone(Spent Time): <%= timeSum = get_milestone_sums(m["download_id"], m["milestone_number"])["time_duration_sum"] %> (<%= (timeSum / budget.to_f * 100).round(2) %> % spent)</p>
+		<p> Count of Time Logs assoicated with Milestone: <%= timeCount = get_milestone_sums(m["download_id"], m["milestone_number"])["time_comment_count"] %></p>
+		<p>Budget Left: <%= budget - timeSum %> (<%= ((budget - timeSum) / budget.to_f * 100).round(2) %>% left) </p>
+
+	<p><strong>Issue breakdown:</strong></p>
+			<table style="width:100%">
 				<tr>
-					<td class="text-center"><%= ait["project"] %></td>
-					<td class="text-center"><%= ait["issue_number"] %></td>
-					<td class="text-center"><%= ait["issue_state"] %></td>
-					<td class="text-center"><%= ait["issue_title"] %></td>
-					<td class="text-center"><%= ait["time_duration_sum"] %></td>
-					<td class="text-center"><%= ait["time_comment_count"] %></td>
-				</tr>						
-			<% end %>
-		</table>
-	</div>
+					<th class="text-center">Issue Number</th>
+					<th class="text-center">Issue Title</th>
+					<th class="text-center">Issue State</th>
+					<th class="text-center">Time Duration Sum</th>
+					<th class="text-center">Time Log Count</th>
+				</tr>
+				<% get_issues_for_milestone(m["download_id"], m["milestone_number"]).each do |i| %>
+					<tr>
+						<td class="text-center"><%= i["issue_number"] %></td>
+						<td class="text-center"><%= i["issue_title"] %></td>
+						<td class="text-center"><%= i["issue_state"] %></td>
+						<td class="text-center"><%= i["time_duration_sum"] %> (<%= (i["time_duration_sum"] / budget.to_f * 100).round(2)%>% of Budget)</td>
+						<td class="text-center"><%= i["time_comment_count"] %></td>
+					</tr>					
+				<% end %>
+			</table>
+		<hr>
+	<% end %>
+
+<a href="/download-xlsx/<%= @snapshot_info["admin_info"]["download_id"] %>">Download XSLX File: Includes Issues and Milestone Data</a>
+
 
 <hr>
 <h2>Milestone Stats Analysis:</h2>
