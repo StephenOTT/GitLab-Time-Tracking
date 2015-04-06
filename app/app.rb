@@ -38,8 +38,7 @@ helpers do
 
 	def gitlab_instance
 		if @gl == nil
-			endpoint = gitlab_endpoint
-			@gl = GitLab_Downloader.new(endpoint, current_user["private_token"])
+			@gl = GitLab_Downloader.new(gitlab_endpoint, current_user["private_token"])
 		else
 			@gl
 		end
