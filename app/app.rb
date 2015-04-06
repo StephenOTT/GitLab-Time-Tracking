@@ -96,10 +96,13 @@ get '/' do
 	erb :index
 end
 
-get '/clear-mongo' do
+get '/clear-mongo/:downloadID' do
+	downloadID = params[:downloadID]
 
-	mongoConnection.clear_mongo_collections
-	flash[:success] = ["Database has been cleared"]
+	mongoConnection.remove_mongo_records(downloadID)
+
+	# mongoConnection.clear_mongo_collections
+	flash[:success] = ["Snapshot has been cleared (#{downloadID})"]
 	redirect '/'
 
 end
