@@ -1,13 +1,13 @@
 
 <% if current_user != nil %>
 
-	<h2>Downloads:</h2>
+	<h2>Avaliable Snapshots:</h2>
 
 
 	<form class="form-horizontal" role="form", action="/", method="post">
 
 		<div class="form-group">
-			 <label for="downloads" class="col-sm-2 control-label">Avaliable Downloads</label>
+			 <label for="downloads" class="col-sm-2 control-label">Snapshots</label>
 			<div class="col-sm-10">
 				<table style="width:100%">
 					<tr>
@@ -15,7 +15,7 @@
 						<th>Download Date</th> 
 						<th>Downloaded By</th>
 						<th>Action</th>
-						<th style="display:none;">Download ID</th>
+						<th>Action</th>
 					</tr>
 					<% @adminQueries.each do |aq| %>
 						<tr>
@@ -23,6 +23,7 @@
 							<td><%= aq["download_date"] %></td>
 							<td><%= aq["downloaded_by"] %></td>
 							<td><a href="/analyze/<%= aq["download_id"] %>">View Time Logs</a></td>
+							<td><a href="/clear-mongo/<%= aq["download_id"] %>">Delete Snapshot</a></td>
 						</tr>						
 					<% end %>
 				</table>
@@ -36,7 +37,7 @@
 	</form>
 
 	<hr>
-	<h2>Download Time Tracking Data from your GitLab Instance</h2>
+	<h2>Create Snapshot of Time Tracking Data from your GitLab Instance</h2>
 
 	<form class="form-horizontal" role="form", action="/gl-download", method="post">
 
