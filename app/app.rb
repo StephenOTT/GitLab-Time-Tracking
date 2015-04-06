@@ -162,7 +162,6 @@ post '/gl-download' do
 
 end
 
-
 get '/analyze/:downloadID' do
 	@downloadID = params[:downloadID]
 
@@ -175,7 +174,6 @@ get '/analyze/:downloadID' do
 	end
 
 end
-
 
 get '/auth/:name/callback' do
 	auth = request.env["omniauth.auth"]
