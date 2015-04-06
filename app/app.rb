@@ -44,7 +44,6 @@ helpers do
 		end
 	end
 
-
 	def admin_queries
 		if @aq == nil
 			@aq = Admin_Queries.new(mongoConnection)
