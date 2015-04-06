@@ -83,10 +83,6 @@ helpers do
 			ENV["GITLAB_ENDPOINT"]
 		end	
 	end
-
-	# def user_projects
-	# 	gitlab_instance.user_projects
-	# end
 end
 
 get '/' do
