@@ -52,6 +52,14 @@ helpers do
 		end
 	end
 
+	def get_issues_for_milestone(downloadID, milestoneNumber)
+		issue_stat_queries.get_issues_for_milestone(downloadID,milestoneNumber)
+	end
+
+	def get_milestone_sums(downloadID, milestoneNumber)
+		issue_stat_queries.get_milestone_sums(downloadID, milestoneNumber)
+	end
+
 	def issue_stat_queries
 		if @isq == nil
 			@isq = Issue_Stat_Queries.new(mongoConnection)
