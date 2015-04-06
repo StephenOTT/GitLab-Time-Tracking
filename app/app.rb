@@ -76,8 +76,12 @@ helpers do
 		end
 	end
 
-	def gitlab_endpoint
-		ENV["GITLAB_ENDPOINT"] + (ENV['ENDPOINT_API_ADDRESS'] || "/api/v3")
+	def gitlab_endpoint(style = "full")
+		if style == "full"
+			ENV["GITLAB_ENDPOINT"] + (ENV['ENDPOINT_API_ADDRESS'] || "/api/v3")
+		elsif style == "short"
+			ENV["GITLAB_ENDPOINT"]
+		end	
 	end
 
 	# def user_projects
