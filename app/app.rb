@@ -168,9 +168,14 @@ get '/analyze/:downloadID' do
 	if current_user == nil
 		flash[:warning] = ["You must log in to download data"]
 		redirect '/'
-	elsif current_user != nil and @downloadID != nil
-		@allIssuesTime = issue_stat_queries.get_all_issues_time(@downloadID)
+	elsif current_user != nil and downloadID != nil
+
+		@milestones = issue_stat_queries.get_milestones(downloadID)
+		@snapshot_info = issue_stat_queries.get_project_snapshot_info(downloadID)
+
 		erb :analyze
+	else
+		flash[:danger] = ["Something went wrong: error location A1"]
 	end
 
 end
