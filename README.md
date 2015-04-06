@@ -51,8 +51,11 @@ Time Tracking application for GitLab Issue Queues built on Ruby Sinatra and Mong
 1. You can only connect to one GitLab Endpoint per application instance.  If you wish to connect to multiple GitLab instances, then you must run multiple instances of the GitLab Time Tracking Application
 2. Only Issues that have notes/comments with Time Tracking records are downloaded into MongoDB.
 3. The same MongoDB database can be used by multiple instances of GitLab Time Tracking.
+4. Design Philosophy: Ensure maximum ease of use per record for a business user.  Each record contains all information needed to exist on its own without any other records.
 
+## Current Limitations
 
+1. The current code being used for converting human readable durations such as "1d"(1 day) or "1w"(1 week), calculates as "24 hours per day".  A future update will allow you to control how you calculate a "Day".  The current **workaround** for this issue/limitation is to always log your time and budgets using Hours or a small time duration (example: 15h, 15m, 15s).
 
 ## Time Tracking Usage Patterns
 
@@ -103,4 +106,44 @@ Logging time for a specific issue should be done in its own comment.  The commen
 ##### Examples
 
 1. `:clock1: :free: 2h` # => :clock1: :free: 2h
+
+
+### Logging Budgets for a Milestone
+
+Logging a budget for a milestone should be done at the beginning of the milestone description.  The typical milestone description information comes after the budget information.  See example 2 below for a typical usage pattern.
+
+#### Examples
+
+1. `:dart: 5d` # => :dart: 5d
+
+2. `:dart: 5d | We cannot go over this time at all!` # => :dart: 5d | We cannot go over this time at all! 
+
+#### Sample
+![screen shot 2013-12-15 at 8 42 04 pm](https://f.cloud.github.com/assets/1994838/1751601/bb73ed86-65f3-11e3-9abb-4c47eabbc608.png)
+![screen shot 2013-12-15 at 8 41 55 pm](https://f.cloud.github.com/assets/1994838/1751602/bb757d9a-65f3-11e3-9ac5-86dba26bc037.png)
+
+
+### Tracking Non-Billable Time and Budgets
+
+The ability to indicate where a Time Log and Budget is considered Non-Billable has been provided.  This is typically used when staff are doing work that will not be billed to the client, but you want to track their time and indicate how much non-billable/free time has been allocated.  The assumption is that all time logs and budgets are billable unless indicated to be Non-Billable.
+
+You may indicate when a time log or budget is non-billable time in any Issue Time Log, Issue Budget, Milestone Budget, Code Commit Message, and Code Commit Comment.
+
+To indicate if time or budgets are non-billable, you add the `:free:` :free: emoji right after your chosen `clock` emoji (like `:clock1:` :clock1:) or for budget you would place the `:free:` :free: emoji right after the `:dart:` :dart: emoji.
+
+#### Non-Billable Time and Budget Tracking Indicator Usage Example
+
+
+##### Logging Non-Billable Time for an Issue
+
+###### Examples
+
+1. `:clock1: :free: 2h` # => :clock1: :free: 2h
+
+##### Logging Non-Billable Budgets for a Milestone
+
+###### Examples
+
+1. `:dart: :free: 5d` # => :dart: :free: 5d
+
 
