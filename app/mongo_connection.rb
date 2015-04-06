@@ -18,6 +18,10 @@ class Mongo_Connection
 		puts "MongoDB Collection has been Cleared"
 	end
 
+	def remove_mongo_records(downloadID)
+		@collTimeTracking.remove( { "admin_info.download_id"=> downloadID } )
+	end
+
 	def putIntoMongoCollTimeTrackingCommits(mongoPayload)
 		@collTimeTracking.insert(mongoPayload)
 	end
