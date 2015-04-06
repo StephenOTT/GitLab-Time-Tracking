@@ -149,13 +149,13 @@ post '/gl-download' do
 		
 		if issuesWithComments.length > 0
 			mongoConnection.putIntoMongoCollTimeTrackingCommits(issuesWithComments)
-			flash[:success] = ["Time Tracking Data has been Downloaded from #{gitlab_endpoint}"]
+			flash[:success] = ["Time Tracking Data has been Downloaded from #{gitlab_endpoint('short')}"]
 		else
-			flash[:danger] = ["Unable to download Time Tracking data from #{gitlab_endpoint}: No Time Tracking Data was found"]
+			flash[:danger] = ["Unable to download Time Tracking data from #{gitlab_endpoint('short')}: No Time Tracking Data was found"]
 		end
 	
 	elsif post == nil 
-		flash[:warning] = ["You must select a Project to download, ensure you are the member or owner of a Project at #{gitlab_endpoint}"]
+		flash[:warning] = ["You must select a Project to download, ensure you are the member or owner of a Project at #{gitlab_endpoint('short')}"]
 
 	end
 	redirect '/'
