@@ -27,6 +27,37 @@ module Gl_Issue_Time
 		end
 	end
 
+        # processes a comment for points
+        def self.process_issue_message_for_points(issue)
+                issueBody = issue["description"]
+                return parse_points_message(issueBody)
+        end
+
+        def self.parse_points_message(pointsMessage) 
+            acceptedPointEmoji = Helpers.get_Issue_Points_Emoji
+
+            parsedMessageHash = { "points_comment" => nil, "points" => nil };
+            parsedMessage = [];
+
+            acceptedPointEmoji.each do |x|
+                parsedMessage = Helpers.parse_points_message(pointsMessage, x)
+            end
+
+            if parsedMessage.empty? == true
+                return nil
+            end
+            if parsedMessage[0] != nil
+                parsedMessageHash['points'] = Helpers.get_points(parsedMessage[0]);
+            end
+
+            if parsedMessage[1] != nil
+                parsedMessageHash['points_comment'] = Helpers.get_time_commit_comment(parsedMessage[1])
+            end
+
+            return parsedMessageHash;
+
+        end
+
 	def self.parse_time_commit(timeComment, nonBillableTime)
 		acceptedClockEmoji = Helpers.get_Issue_Time_Emoji
 		acceptedNonBilliableEmoji = Helpers.get_Non_Billable_Emoji

@@ -62,11 +62,12 @@ class GitLab_Downloader
 				x["created_at"] = DateTime.strptime(x["created_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc
 				x["updated_at"] = DateTime.strptime(x["updated_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc
 
+                                x = Gl_Issue.process_description(x);
+
 				commentPageNum = 1
 				issueComments = @glClient.issue_notes(x["project_id"], x["id"], :per_page=>100, :page=>commentPageNum)	# Gets the notes for the current issue
 
-
-				if issueComments.length > 0	# If there are notes in the issue then...
+				if issueComments.length > 0 || x['points'] > 0	# If there are notes in the issue then...
 					comments2 = []	# Array used to hold comments with time tracking information.
 
 
@@ -91,7 +92,7 @@ class GitLab_Downloader
 					end
 
 					# if there are comments with time tracking information then....
-					if comments2.length > 0
+                                        if x['points'] > 0 || comments2.length > 0
 											# If there is milestone data then....
 						if x["milestone"] != nil
 							x["milestone"]["created_at"] = DateTime.strptime(x["milestone"]["created_at"], '%Y-%m-%dT%H:%M:%S.%L%z').to_time.utc

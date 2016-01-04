@@ -20,4 +20,8 @@ module Accepted_Time_Tracking_Emoji
 		acceptedNonBilliableEmoji = [":dart:"]
 	end
 
+        def self.accepted_issue_points_emoji
+                [":point_up:"]
+        end
+
 end

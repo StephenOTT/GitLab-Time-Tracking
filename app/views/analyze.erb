@@ -17,6 +17,8 @@
 		<p> Budget: <%= budget = m["milestone_budget_duration"].to_i %></p>
 		<p> Due Date: <%= m["milestone_due_date"] %></p>
 		<p> Sum of Time Logs assoicated with Milestone(Spent Time): <%= timeSum = get_milestone_sums(m["download_id"], m["milestone_number"])["time_duration_sum"] %> (<%= (timeSum / budget.to_f * 100).round(2) %> % spent)</p>
+
+                <p> Sum of story points: <%= get_milestone_points(m["download_id"], m["milestone_number"])["points_total"] %></p>
 		<p> Count of Time Logs assoicated with Milestone: <%= timeCount = get_milestone_sums(m["download_id"], m["milestone_number"])["time_comment_count"] %></p>
 		<p>Budget Left: <%= budget - timeSum %> (<%= ((budget - timeSum) / budget.to_f * 100).round(2) %>% left) </p>
 
@@ -27,6 +29,7 @@
 					<th class="text-center">Issue Title</th>
 					<th class="text-center">Issue State</th>
 					<th class="text-center">Time Duration Sum</th>
+                                        <th class="text-center">Story points</th>
 					<th class="text-center">Time Log Count</th>
 				</tr>
 				<% get_issues_for_milestone(m["download_id"], m["milestone_number"]).each do |i| %>
@@ -35,6 +38,7 @@
 						<td class="text-center"><%= i["issue_title"] %></td>
 						<td class="text-center"><%= i["issue_state"] %></td>
 						<td class="text-center"><%= i["time_duration_sum"] %> (<%= (i["time_duration_sum"] / budget.to_f * 100).round(2)%>% of Budget)</td>
+                                                <td class="text-center"><%= i["issue_points"] %></td>
 						<td class="text-center"><%= i["time_comment_count"] %></td>
 					</tr>					
 				<% end %>

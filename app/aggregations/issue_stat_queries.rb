@@ -129,15 +129,19 @@ class Issue_Stat_Queries
 	end
 
 
+
+
 	def get_issues_for_milestone(downloadID, milestoneNumber)
 		output = @mongoConnection.aggregate([
-			{ "$unwind" => "$comments" },
+			{ "$unwind" => {path: "$comments", preserveNullAndEmptyArrays: true }},
 			{"$project" => {_id: 0, 
 							download_id: "$admin_info.download_id",
 							# project: "$project_info.path_with_namespace",
 							issue_number: "$iid",
 							issue_title: "$title",
 							issue_state: "$state",
+                                                        issue_comment_flag: { "$cond" => [ "$comments.time_tracking_data", 1, 0 ] },
+                                                        issue_points: "$points",
 							comment_duration: "$comments.time_tracking_data.duration",
 							comment_time_comment: { "$ifNull" => [ "$comments.time_tracking_data.time_comment", nil ] },
 							milestone_number: { "$ifNull" => [ "$milestone.iid", nil ] },
@@ -151,7 +155,7 @@ class Issue_Stat_Queries
 								issue_state: "$issue_state",
 								},
 								time_duration_sum: { "$sum" => "$comment_duration" },
-								time_comment_count: {"$sum" => 1}
+								time_comment_count: {"$sum" => "$issue_comment_flag"}
 								}
 							},
 							])
@@ -202,6 +206,38 @@ class Issue_Stat_Queries
 		# end
 		return output.map { |e| e["_id"]  }
 	end
+
+        def get_milestone_points(downloadID, milestoneNumber)
+                output = @mongoConnection.aggregate([
+                        {"$project" => {_id: 0, 
+                                                        download_id: "$admin_info.download_id",
+                                                        project: "$project_info.path_with_namespace",
+                                                        issue_number: "$iid",
+                                                        milestone_number: { "$ifNull" => [ "$milestone.iid", nil ] },
+                                                        milestone_title: { "$ifNull" => [ "$milestone.title", nil ] },
+                                                        milestone_budget_comment: { "$ifNull" => [ "$milestone.milestone_budget_data.budget_comment", nil ] },
+                                                        milestone_state: { "$ifNull" => [ "$milestone.state", nil ] },
+                                                        milestone_due_date: { "$ifNull" => [ "$milestone.due_date", nil ] },
+                                                        milestone_budget_duration: { "$ifNull" => [ "$milestone.milestone_budget_data.duration", nil ] },
+                                                        issue_points: { "$ifNull" => [ "$points", nil ] },
+
+
+                                                        }},
+                        { "$match" => {download_id: downloadID, milestone_number: milestoneNumber}},
+                        { "$group" => { _id: {
+                                                                download_id: "$download_id",
+                                                                milestone_number: "$milestone_number",
+
+                                                                },
+                                                                points_total: { "$sum" => "$issue_points" },
+                                                        }},
+                                                        ])
+                output.each do |x|
+                        x["_id"]["points_total"] = x["points_total"]
+                end
+                return output.map { |e| e["_id"]  }.first
+        end
+
 	def get_milestone_sums(downloadID, milestoneNumber)
 		output = @mongoConnection.aggregate([
 			{ "$unwind" => "$comments" },
@@ -219,6 +255,7 @@ class Issue_Stat_Queries
 							milestone_state: { "$ifNull" => [ "$milestone.state", nil ] },
 							milestone_due_date: { "$ifNull" => [ "$milestone.due_date", nil ] },
 							milestone_budget_duration: { "$ifNull" => [ "$milestone.milestone_budget_data.duration", nil ] },
+                                                        comment_points: { "$ifNull" => [ "$comments.points_tracking_data.points", nil ] },
 
 
 							}},
@@ -243,7 +280,13 @@ class Issue_Stat_Queries
 			x["_id"]["time_duration_sum"] = x["time_duration_sum"]
 			x["_id"]["time_comment_count"] = x["time_comment_count"]
 		end
-		return output.map { |e| e["_id"]  }.first
+
+
+                if output.length > 0
+                    return output.map { |e| e["_id"]  }.first
+                else
+                    return { 'time_duration_sum' => 0, 'time_comment_count' => 0 };
+                end
 	end
 
 end

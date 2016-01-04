@@ -16,9 +16,17 @@ module Helpers
 		return Accepted_Time_Tracking_Emoji.accepted_nonBillable_emoji
 	end
 
+        def self.get_Issue_Points_Emoji
+            return Accepted_Time_Tracking_Emoji.accepted_issue_points_emoji
+        end
+
 	def self.get_duration(durationText)
 		return ChronicDuration.parse(durationText)
 	end
+
+        def self.get_points(pointText) 
+            return pointText
+        end
 
 	def self.get_time_work_date(parsedTimeComment)
 		begin
@@ -35,6 +43,14 @@ module Helpers
 	def self.parse_billable_time_comment(timeComment, timeEmoji)
 		return timeComment.gsub("#{timeEmoji} ","").split(" | ")
 	end
+
+        def self.parse_points_message(issueDescription, pointsEmoji)
+            return issueDescription.
+                split("\n").
+                find{ |s| s[/^#{pointsEmoji}/] }.
+                gsub("#{pointsEmoji} ","").
+                split(" | ")
+        end
 
 	def self.get_time_commit_comment(parsedTimeComment)
 		return parsedTimeComment.lstrip.gsub("\r\n", " ")
@@ -59,6 +75,12 @@ module Helpers
 
 		acceptedClockEmoji.any? { |w| commentBody =~ /\A#{w}/ }
 	end
+
+        # Is it a points comment?  Returns True or False
+        def self.points_message?(commentBody)
+                acceptedPointEmoji = Accepted_Time_Tracking_Emoji.accepted_issue_points_emoji
+                acceptedPointEmoji.any? { |w| commentBody =~ /^#{w}/m }
+        end
 
 
 	# TODO Rebuild for GitLab

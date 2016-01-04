@@ -7,6 +7,25 @@ require_relative 'issue_time'
 
 module Gl_Issue
 
+        def self.process_description(issue) 
+            includesPointsInfo = Helpers.points_message?(issue['description'])
+
+            if includesPointsInfo
+                parsedPoints = Gl_Issue_Time.process_issue_message_for_points(issue);
+                if parsedPoints != nil
+                    issue['points'] = parsedPoints['points'].to_i;
+                    issue['points_comment'] = parsedPoints['points_comment'];
+                    issue['points_points'] = parsedPoints['points'];
+                else
+                    issue['points'] = 0;
+                end
+            else
+                issue['points'] = 0;
+            end
+
+            return issue
+        end
+
 	def self.process_comment(issueComment)
 		bodyField = issueComment["body"]
 		
@@ -29,13 +48,13 @@ module Gl_Issue
 				else
 					return output = nil
 				end
+                        end
 			# Buget Handling
-			# elsif isBudgetComment == true
-			# 	parsedBudget = Gh_Issue_Budget.process_issue_comment_for_budget(x)
-			# 	if parsedBudget != nil
-			# 		commentsTime << parsedBudget
-			# 	end
-			end		
+			#elsif isBudgetComment == true
+			#	parsedBudget = Gh_Issue_Budget.process_issue_comment_for_budget(issueComment)
+			#	if parsedBudget != nil
+			#		commentsTime << parsedBudget
+			#	end
 		# end # do not delete this 'end'.  it is part of issueComments do block
 
 		# if commentsTime.empty? == false

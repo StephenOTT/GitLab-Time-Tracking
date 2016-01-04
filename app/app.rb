@@ -60,6 +60,10 @@ helpers do
 		issue_stat_queries.get_milestone_sums(downloadID, milestoneNumber)
 	end
 
+        def get_milestone_points(downloadID, milestoneNumber)
+                issue_stat_queries.get_milestone_points(downloadID, milestoneNumber)
+        end
+
 	def issue_stat_queries
 		if @isq == nil
 			@isq = Issue_Stat_Queries.new(mongoConnection)
@@ -117,13 +121,14 @@ get '/download-xlsx/:downloadID' do
 		dataExportConnection = XLSXExporter.new(mongoConnection)
 		dataExportIssues = dataExportConnection.get_all_issues_time(downloadID)
 		dataExportMilestones = dataExportConnection.get_all_milestone_budgets(downloadID)
+                dataExportStoryPoints = dataExportConnection.get_all_story_points(downloadID)
 
-		if dataExportIssues.empty? == false or dataExportMilestones.empty? == false
+                if dataExportIssues.empty? == false or dataExportMilestones.empty? == false or dataExportStoryPoints.empty? == false
 
 			content_type 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 			attachment 'time-tracking.xlsx'
 
-			file = dataExportConnection.generateXLSX(dataExportIssues, dataExportMilestones)
+			file = dataExportConnection.generateXLSX(dataExportIssues, dataExportMilestones, dataExportStoryPoints)
 		else
 			flash[:danger] = ["Unable to generate a xlsx: No time tracking data has been downloaded"]
 			redirect '/'
