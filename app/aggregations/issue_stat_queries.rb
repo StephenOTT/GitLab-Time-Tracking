@@ -26,11 +26,13 @@ class Issue_Stat_Queries
 		# TODO add filtering and extra security around query
 		output = @mongoConnection.aggregate([
 			# { "$match" => { project_id: projectID }},
-			{"$limit" => 1},
 			{"$project" => {_id: 0,
+                                                        download_id: "$admin_info.download_id",
 							admin_info: "$admin_info", 
 							project_info: "$project_info",
-							}}
+							}},
+                        { "$match" => {download_id: downloadID}},
+                        {"$limit" => 1},
 							]).first
 	end
 
